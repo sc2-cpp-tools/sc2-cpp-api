@@ -28,7 +28,7 @@ Preset CMake variables:
 ...
 
 # Build from the generated preset
-$ cmake --build buid/gcc-devel -j
+$ cmake --build build/gcc-devel -j
 ```
 
 With presets, multiple build configurations with isolated binary and library outputs can exist in the build directory simultaneously.
