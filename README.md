@@ -62,7 +62,7 @@ The following dependencies are required to build the project, and in some cases 
 ### Development Dependencies
 ---
 
-While these dependencies are not required to build the project, they are actively used to enhance development and enforce coding standards:
+While these dependencies are not required to build the project, they are used to enhance development and enforce coding standards:
 
 
 - `clang-tidy`
@@ -71,3 +71,5 @@ While these dependencies are not required to build the project, they are activel
 - [`ccache`](https://ccache.dev/)
 - [`cppcheck`](https://cppcheck.sourceforge.io/)
 - [`include-what-you-use`](https://github.com/include-what-you-use/include-what-you-use)
+  - Used sparingly to identify extraneous headers which can be removed
+  - Will not be fully integrated into the project until mappings for Boost 1.80.0 are released (required for process v2)
