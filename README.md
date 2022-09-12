@@ -3,7 +3,6 @@
 A modern C++17/20-based re-implementation of the [`Blizzard/s2client-api`](https://github.com/Blizzard/s2client-api).
 
 ## Building
----
 
 `CMakePresets.json` defines CMake build configurations available for the project. Presets available for your operating system can be viewed with the `--list-presets` command:
 
@@ -69,19 +68,16 @@ With presets, multiple build configurations with isolated binary and library out
 [^1]: There is a known issue with doxygen and mismatched md5 hashes with more than one build configuration present.
 
 ## Requirements
----
 
 The project is currently under development, and incorporates [`project_options`](https://github.com/aminya/project_options) as the primary interface for managing CMake configuration. Development dependencies (such as `clang-tidy`) can be disabled from the `project_options` interface in the root `CMakeLists.txt`.
 
 ### Installing Dependencies
----
 
 As an alternative to individually installing each dependency to the recommended version, the project includes a configurable `Dockerfile` to build an image with all dependencies installed. The `.ubuntu/bootstrap.sh` script can also be used to bootstrap a Ubuntu image (tested with 20.04).
 
 Irrespective of the dependency versions installed, the project's CMake build configuration is expecting the base executable name (e.g. `clang` instead of `clang-14`). Both the `Dockerfile` and bootstrap script create the necessary symbolic links, which must otherwise be completed manually for custom installs.
 
 ### Build Dependencies
----
 
 The following dependencies are required to build the project, and in some cases are pre-requisite for additional development tools:
 
@@ -98,7 +94,6 @@ The following dependencies are required to build the project, and in some cases 
   - Required to build project documentation
 
 ### Development Dependencies
----
 
 While these dependencies are not required to build the project, they are used to enhance development and enforce coding standards:
 
@@ -113,7 +108,6 @@ While these dependencies are not required to build the project, they are used to
   - Will not be fully integrated into the project until mappings for Boost 1.80.0 are released (required for process v2)
 
 ### Integrated Dependencies
----
 
 Some third party requirements are incorporated as part of the CMake configuration, and will be downloaded at configuration time:
 
