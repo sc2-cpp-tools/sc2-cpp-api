@@ -9,6 +9,9 @@ include(FetchContent)
 # Use project_options
 include(./third_party/cmake/project_options.cmake)
 
+# Catch2 test framework
+include(./third_party/cmake/catch2.cmake)
+
 # Define build options
 include(./cmake/options.cmake)
 
