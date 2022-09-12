@@ -1,9 +1,8 @@
 #include "temp/temp.hpp"
 
-#include <cassert>
+#include <catch2/catch_test_macros.hpp>
 
-auto main() -> int {
-    assert(temp() == 1);
-
-    return 0;
+TEST_CASE("Always returns 1", "[temp]") {
+    REQUIRE(temp() == 1);
+    REQUIRE(temp() != 2);
 }

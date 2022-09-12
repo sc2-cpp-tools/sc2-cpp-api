@@ -104,39 +104,20 @@
             "hidden": true,
             "cacheVariables": {
                 "BUILD_TESTS": "ON",
-                "DEVEL_MODE": "ON"
-            }
-        },
-        {
-            "name": "docs",
-            "hidden": true,
-            "cacheVariables": {
-                "BUILD_DOCS": "ON"
+                "ENABLE_DEVELOPER_MODE": "ON"
             }
         },
         {
             "name": "gcc-devel-debug",
-            "displayName": "gcc development mode",
+            "displayName": "gcc debug development mode",
             "description": "Build with tests, docs, and devel mode enabled",
             "inherits": ["conf-unixlike-common", "gcc", "devel", "debug"]
         },
         {
-            "name": "gcc-docs",
-            "displayName": "gcc generate doxygen",
-            "description": "Build with tests, docs, and devel mode enabled",
-            "inherits": ["conf-unixlike-common", "gcc", "docs", "release"]
-        },
-        {
             "name": "clang-devel-debug",
-            "displayName": "clang development mode",
+            "displayName": "clang debug development mode",
             "description": "Build with tests, docs, and devel mode enabled",
             "inherits": ["conf-unixlike-common", "clang", "devel", "debug"]
-        },
-        {
-            "name": "clang-docs",
-            "displayName": "clang generate doxygen",
-            "description": "Build with tests, docs, and devel mode enabled",
-            "inherits": ["conf-unixlike-common", "clang", "docs", "release"]
         }
     ],
     "testPresets": [
@@ -151,6 +132,20 @@
                 "noTestsAction": "error",
                 "stopOnFailure": true
             }
+        },
+        {
+            "name": "test-linux-gcc-debug",
+            "displayName": "Strict",
+            "description": "Enable output and stop on failure",
+            "inherits": "test-common",
+            "configurePreset": "gcc-devel-debug"
+        },
+        {
+            "name": "test-linux-clang-debug",
+            "displayName": "Strict",
+            "description": "Enable output and stop on failure",
+            "inherits": "test-common",
+            "configurePreset": "clang-devel-debug"
         }
     ]
 }

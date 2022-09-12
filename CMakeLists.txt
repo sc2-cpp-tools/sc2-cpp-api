@@ -9,6 +9,12 @@ include(FetchContent)
 # Use project_options
 include(./third_party/cmake/project_options.cmake)
 
+# Catch2 test framework
+include(./third_party/cmake/catch2.cmake)
+
+# Boost
+include(./third_party/cmake/boost.cmake)
+
 # Define build options
 include(./cmake/options.cmake)
 
@@ -19,65 +25,30 @@ project(
     HOMEPAGE_URL "https://github.com/sc2-cpp-tools/sc2-cpp-api"
     LANGUAGES CXX C)
 
-set(ENABLE_CLANG_TIDY OFF)
-set(ENABLE_CPPCHECK OFF)
-set(ENABLE_SANITIZER_ADDRESS OFF)
-set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR OFF)
-set(ENABLE_COVERAGE OFF)
-
-# Enable sanitizers and clang-tidy if running the tests
-if (BUILD_TESTS)
-    set(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY")
-    set(ENABLE_CPPCHECK "ENABLE_CPPCHECK")
-    set(ENABLE_COVERAGE "ENABLE_COVERAGE")
-    enable_testing()
-
-    if (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-        set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-        set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-            "ENABLE_SANITIZER_UNDEFINED_BEHAVIOR")
-    else ()
-        # MSVC has vcvarsall
-        string(FIND "$ENV{PATH}" "$ENV{VSINSTALLDIR}" index_of_vs_install_dir)
-        if (MSVC AND "${index_of_vs_install_dir}" STREQUAL "-1")
-            set(ENABLE_SANITIZER_ADDRESS "ENABLE_SANITIZER_ADDRESS")
-        endif ()
-    endif ()
-endif ()
-
-if (BUILD_DOCS)
-    set(ENABLE_DOXYGEN "ENABLE_DOXYGEN")
-    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE doc/doxygen/mainpage.md)
-else ()
-    set(ENABLE_DOXYGEN OFF)
-endif ()
-
-if (DEVEL_MODE)
-    set(WARNINGS_AS_ERRORS ON)
-else ()
-    set(WARNINGS_AS_ERRORS OFF)
-endif ()
-
-# See README of project_options Initialize project_options variable related to
-# this project. This overwrites `project_options` and sets `project_warnings`.
-# Uncomment to enable the options, some accept one or more inputs:
-project_options(
-    ENABLE_CACHE
-    ${ENABLE_CPPCHECK}
-    ${ENABLE_CLANG_TIDY}
-    ${ENABLE_DOXYGEN}
-    ${ENABLE_COVERAGE}
-    ${ENABLE_SANITIZER_ADDRESS}
-    ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-    WARNINGS_AS_ERRORS
-    ENABLE_INCLUDE_WHAT_YOU_USE)
+# Custom cppcheck options to suppress analysis of third party libs
+dynamic_project_options(
+    CPPCHECK_OPTIONS
+    "--inline-suppr"
+    "--enable=style,performance,warning,portability"
+    "--suppress=internalAstError"
+    "--suppress=unmatchedSuppression"
+    "--suppress=*:${_catch2_SOURCE_DIR}/*"
+    "--suppress=*:${Boost_INCLUDE_DIRS}/*"
+    "--inconclusive")
 
 add_subdirectory(./src)
-add_subdirectory(./test)
+
+if (BUILD_TESTS)
+    message(STATUS "Building Tests.")
+
+    include(CTest)
+    enable_testing()
+    add_subdirectory(./test)
+endif ()
 
 package_project(
     TARGETS
-    temp_main
+    temp
     project_options
     project_warnings
     INTERFACE_DEPENDENCIES_CONFIGURED
