@@ -20,18 +20,53 @@ $ cmake --preset gcc-devel
 
 Preset CMake variables:
 
-    BUILD_TESTS="ON"
-    CMAKE_BUILD_TYPE="Debug"
-    CMAKE_CXX_COMPILER="g++"
-    CMAKE_C_COMPILER="gcc"
-    DEVEL_MODE="ON"
+  BUILD_TESTS="ON"
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_CXX_COMPILER="g++"
+  CMAKE_C_COMPILER="gcc"
+  ENABLE_DEVELOPER_MODE="ON"
 ...
 
 # Build from the generated preset
-$ cmake --build build/gcc-devel -j
+$ cmake --build build/gcc-devel -j8
+
+# Alternatively, create a buildPreset in your local CMakeUserPresets.json for
+# consistent IDE execution:
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 24,
+        "patch": 1
+    },
+    "buildPresets": [
+        {
+            "name": "build-common",
+            "description": "Build CMake settings that apply to all configurations",
+            "hidden": true,
+            "jobs": 25  <--- System dependent, adjust as necessary
+        },
+        {
+            "name": "build-linux-gcc-debug",
+            "displayName": "DEBUG",
+            "description": "Build preset for gcc-devel-debug",
+            "configurePreset": "gcc-devel-debug",
+            "inherits": "build-common"
+        },
+        {
+            "name": "build-linux-clang-debug",
+            "displayName": "DEBUG",
+            "description": "Build preset for clang-devel-debug",
+            "configurePreset": "clang-devel-debug",
+            "inherits": "build-common"
+        }
+    ]
+}
 ```
 
-With presets, multiple build configurations with isolated binary and library outputs can exist in the build directory simultaneously.
+With presets, multiple build configurations with isolated binary and library outputs can exist in the build directory simultaneously.[^1]
+
+[^1]: There is a known issue with doxygen and mismatched md5 hashes with more than one build configuration present.
 
 ## Requirements
 ---
@@ -41,7 +76,7 @@ The project is currently under development, and incorporates [`project_options`]
 ### Installing Dependencies
 ---
 
-As an alternative to indivdiually installing each dependency to the recommended version, the project includes a configurable `Dockerfile` to build an image with all dependencies installed. The `.ubuntu/bootstrap.sh` script can also be used to bootstrap a Ubuntu image (tested with 20.04).
+As an alternative to individually installing each dependency to the recommended version, the project includes a configurable `Dockerfile` to build an image with all dependencies installed. The `.ubuntu/bootstrap.sh` script can also be used to bootstrap a Ubuntu image (tested with 20.04).
 
 Irrespective of the dependency versions installed, the project's CMake build configuration is expecting the base executable name (e.g. `clang` instead of `clang-14`). Both the `Dockerfile` and bootstrap script create the necessary symbolic links, which must otherwise be completed manually for custom installs.
 
@@ -55,7 +90,10 @@ The following dependencies are required to build the project, and in some cases 
   - `clang` is required for `include-what-you-use`
 - [`CMake`](https://cmake.org/)
   - Recommended: [`v3.24.1`](https://github.com/Kitware/CMake/releases/tag/v3.24.1) and newer
-  - Warning: while [`v3.21.0`](https://github.com/Kitware/CMake/releases/tag/v3.21.0) should be sufficient to support the current CMake presets version schema, the project will not support backwards compatability for releases prior to the recommended
+  - Warning: while [`v3.21.0`](https://github.com/Kitware/CMake/releases/tag/v3.21.0) should be sufficient to support the current CMake presets version schema, the project will not support backwards compatibility for releases prior to the recommended
+- [`Boost`](https://www.boost.org/users/history/version_1_80_0.html)
+  - Version 1.80.0 is **required** for `Boost::process::v2`
+  - **Boost is not currently part of the install script or Dockerfile**
 - [`doxygen`](https://www.doxygen.nl/)
   - Required to build project documentation
 
@@ -73,3 +111,14 @@ While these dependencies are not required to build the project, they are used to
 - [`include-what-you-use`](https://github.com/include-what-you-use/include-what-you-use)
   - Used sparingly to identify extraneous headers which can be removed
   - Will not be fully integrated into the project until mappings for Boost 1.80.0 are released (required for process v2)
+
+### Integrated Dependencies
+---
+
+Some third party requirements are incorporated as part of the CMake configuration, and will be downloaded at configuration time:
+
+- [`project_options`](https://github.com/aminya/project_options)
+  - A useful CMake project configuration library
+- [`Catch2 v3`](https://github.com/catchorg/Catch2)
+  - C++ test framework
+  - Also provides CMake targets and functions for test running and registration
