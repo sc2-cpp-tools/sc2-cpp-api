@@ -1,5 +1,7 @@
 BasedOnStyle: LLVM
-ColumnLimit: 80
+
+AccessModifierOffset: -4
+ColumnLimit: 120
 IndentWidth: 4
 TabWidth: 4
 SortIncludes: true
@@ -7,8 +9,8 @@ SortUsingDeclarations: true
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false
-AlignEscapedNewlines: Left
 AlignAfterOpenBracket: AlwaysBreak
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: None
 BreakConstructorInitializers: AfterColon
+PointerAlignment: Left
