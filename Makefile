@@ -1,7 +1,7 @@
 sources := $(shell find src test -iname *.cpp)
 headers := $(shell find include -iname *.hpp)
 
-CMAKE_DIRS = src third_party cmake
+CMAKE_DIRS = src test third_party cmake
 cmakefiles := $(shell find $(CMAKE_DIRS) -iname *.cmake -o -name CMakeLists.txt)
 
 # Clang-format configuration
