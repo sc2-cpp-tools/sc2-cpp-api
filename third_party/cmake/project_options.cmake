@@ -20,5 +20,5 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 include(${_project_options_SOURCE_DIR}/src/DynamicProjectOptions.cmake)
 
 # Developer mode defaults
-set(ENABLE_COVERAGE_DEVELOPER_DEFAULT ON)
+set(ENABLE_COVERAGE_DEVELOPER_DEFAULT OFF)
 set(ENABLE_DOXYGEN_DEVELOPER_DEFAULT ON)
