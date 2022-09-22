@@ -6,6 +6,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
 
+project(
+    sc2-cpp-api
+    VERSION 0.0.1
+    DESCRIPTION ""
+    HOMEPAGE_URL "https://github.com/sc2-cpp-tools/sc2-cpp-api"
+    LANGUAGES CXX
+              C)
+
 # Use project_options
 include(./third_party/cmake/project_options.cmake)
 
@@ -15,15 +23,11 @@ include(./third_party/cmake/catch2.cmake)
 # Boost
 include(./third_party/cmake/boost.cmake)
 
+# CLI11
+include(./third_party/cmake/cli11.cmake)
+
 # Define build options
 include(./cmake/options.cmake)
-
-project(
-    sc2-cpp-api
-    VERSION 0.0.1
-    DESCRIPTION ""
-    HOMEPAGE_URL "https://github.com/sc2-cpp-tools/sc2-cpp-api"
-    LANGUAGES CXX C)
 
 # Custom cppcheck options to suppress analysis of third party libs
 dynamic_project_options(
@@ -34,7 +38,9 @@ dynamic_project_options(
     "--suppress=unmatchedSuppression"
     "--suppress=*:${_catch2_SOURCE_DIR}/*"
     "--suppress=*:${Boost_INCLUDE_DIRS}/*"
-    "--inconclusive")
+    "--suppress=*:${_cli11_SOURCE_DIR}/*"
+    "--inconclusive"
+    "--force")
 
 add_subdirectory(./src)
 
@@ -48,7 +54,9 @@ endif ()
 
 package_project(
     TARGETS
-    temp
+    sc2api
+    sc2api_util
+    CLI11
     project_options
     project_warnings
     INTERFACE_DEPENDENCIES_CONFIGURED

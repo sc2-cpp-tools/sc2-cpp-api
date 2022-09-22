@@ -1,1 +1,4 @@
-option(BUILD_TESTS "Enable building the tests" OFF)
+option(
+    BUILD_TESTS
+    "Enable building the tests"
+    OFF)
