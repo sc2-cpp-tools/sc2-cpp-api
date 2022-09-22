@@ -1,6 +1,4 @@
-add_library(
-    sc2api_util
-    options.cpp)
+add_library(sc2api_util options.cpp)
 add_library(
     sc2::util
     ALIAS

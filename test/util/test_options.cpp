@@ -160,7 +160,8 @@ protected:
 private:
 };
 
-TEST_CASE_METHOD(InvalidServerAddress, "Malformed server addresses should throw on boost::asio::ip::address", "[options]") {
+TEST_CASE_METHOD(
+    InvalidServerAddress, "Malformed server addresses should throw on boost::asio::ip::address", "[options]") {
     sc2::util::ProgramOptionsManager manager(argc, static_cast<const char**>(argv));
 
     REQUIRE_THROWS(manager.parseOptions());
